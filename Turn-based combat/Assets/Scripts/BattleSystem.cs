@@ -7,8 +7,8 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-
-	public GameObject playerPrefab;
+    [Header("Game Control")]
+    public GameObject playerPrefab;
 	public GameObject enemyPrefab;
 
 	public Transform playerBattleStation;
@@ -17,12 +17,14 @@ public class BattleSystem : MonoBehaviour
 	Unit playerUnit;
 	Unit enemyUnit;
 
+	[Header("UI")]
 	public Text dialogueText;
 
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
 
-	public BattleState state;
+    [Header("Game State")]
+    public BattleState state;
 
     // Start is called before the first frame update
     void Start()
@@ -31,11 +33,14 @@ public class BattleSystem : MonoBehaviour
 		StartCoroutine(SetupBattle());
     }
 
+	// 처음 배틀 세팅
 	IEnumerator SetupBattle()
 	{
+		// 플레이어 생성
 		GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
 		playerUnit = playerGO.GetComponent<Unit>();
 
+		// 적 생성
 		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
 		enemyUnit = enemyGO.GetComponent<Unit>();
 
@@ -52,7 +57,7 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator PlayerAttack()
 	{
-		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+		bool isDead = enemyUnit.TakeDamage(playerUnit.damage); // Enemy의 상태
 
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogueText.text = "The attack is successful!";
@@ -76,7 +81,7 @@ public class BattleSystem : MonoBehaviour
 
 		yield return new WaitForSeconds(1f);
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+		bool isDead = playerUnit.TakeDamage(enemyUnit.damage); // Player의 상태
 
 		playerHUD.SetHP(playerUnit.currentHP);
 
@@ -94,6 +99,7 @@ public class BattleSystem : MonoBehaviour
 
 	}
 
+	// 배틀이 끝났을 때
 	void EndBattle()
 	{
 		if(state == BattleState.WON)

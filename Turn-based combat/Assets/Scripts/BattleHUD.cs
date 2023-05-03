@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class BattleHUD : MonoBehaviour
 {
-
-	public Text nameText;
+    [Header("UI Info")]
+    public Text nameText;
 	public Text levelText;
 	public Slider hpSlider;
 
